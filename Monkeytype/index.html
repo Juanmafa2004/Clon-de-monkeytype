@@ -18,14 +18,61 @@
         margin-top: 32px;
         padding: 16px;
     }
+    section{
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        max-width: 500px;
+    }
+    time{
+        color: var(--yellow)
+    }
+    input{
+        z-index: -999;
+        position: absolute;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        /* opacity: 0; */
+    }
+    p{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 8px;
+        margin: 0;
+    }
+
+    x-letter{
+        color: var(--gray);
+        position: relative;
+        
+        &.active::before{
+            content: '|';
+            color: var(--yellow);
+            font-size: 14px;
+            position: absolute;
+            left: -65%;
+            animation: 1s blink infinite ease-in-out;
+        }
+    }
+
+    @keyframes blink{
+        0%, 25%{
+            opacity:  1;
+        }
+        75%{
+            opacity: 0;
+        }
+
+    }
 </style>
 <body>
     <main>
        <section id="game">
-        <time>30</time>
-        <p>
-            <input autofocus>
-        </p>
+        <time></time>
+        <p></p>
+        <input autofocus>
        </section>
     </main>
 </body>
@@ -44,17 +91,47 @@
     initEvents();
 
     function initGame(){
+
+        // logica de el texto
+        
         words = TEXT.split(' ').slice(0, 32)
         currentsTime = INITIAL_TIME
         $time.textContent = currentsTime;
 
-        $paragraph.textContent = words.map((words, index) => {
-            const letters = words.split('')
-            
-        })
+        $paragraph.innerHTML = words.map((word, index) => {
+            const letters = word.split('')
 
+            return  `<x-word>
+            ${letters
+                .map(letter =>`<x-letter>${letter}</x-letter>`)
+                .join('')
+            }
+            </x-word>
+            `
+        }).join('')
+
+        //logica del puntero
+        const $firstWord =$paragraph.querySelector('x-word')
+        $firstWord.classList.add('active')
+        $firstWord.querySelector('x-letter').classList.add('active')
+
+
+        //logica del tiempo
+        const intervalId = setInterval(() =>{
+            currentsTime--;
+            $time.textContent = currentsTime
+            if(currentsTime ===0){
+                clearInterval(intervalId)
+               gameOver();
+            }
+        }, 1000)
     }
 
 
-    function initEvents(){}
+    function initEvents(){
+        
+    }
+    function gameOver(){
+        console.log('game over')
+    }
 </script>
