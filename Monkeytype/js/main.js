@@ -57,10 +57,11 @@ function initEvents(){
     $input.addEventListener('keyup', onkeyup);
 }
 function onkeydown(){
+    
 
 }
 function onkeyup(){
-    //recuperamos los elementos actuarles
+    //recuperamos los elementos actuales
     const $currentWord = $paragraph.querySelector('x-word.active');
     const $currentLetter = $paragraph.querySelector('x-letter.active');
 
@@ -75,13 +76,33 @@ function onkeyup(){
     $allLetters.forEach($letter => $letter.classList.remove('correct', 'incorrect'))
      
     $input.value.split('').forEach((char, index)=>{
+        //se guarda cada letra en una variable
         const $letter = $allLetters[index]
+        //se guarda la letra actural tambien
         const letterToCheck = currentWord[index]
+        //se comparan los dos y se les da su respectivo estado
         const isCorrect = char === letterToCheck
         const letterClass = isCorrect ? 'correct': 'incorrect'
         //se le añade al elemento esta nueva clase
         $letter.classList.add(letterClass)
     })
+
+    //logica movimiento del cursor
+
+    //se remueve la letra que esta actualmente activa
+    $currentLetter.classList.remove('active', 'is-last')
+    //se asigna a una nueva letra el clase activa
+    const inputLength = $input.value.length
+    const $nextActiveLetter = $allLetters[inputLength]
+    if($nextActiveLetter){
+        $nextActiveLetter.classList.add('active')
+
+    }else{
+        $currentLetter.classList.add('active', 'is-last')
+        //To do: game over si no hay proxima palabra
+    }
+
+
 }
 
 function gameOver(){
