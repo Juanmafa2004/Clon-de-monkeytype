@@ -55,6 +55,12 @@
             left: -65%;
             animation: 1s blink infinite ease-in-out;
         }
+        &.correct{
+            color: var(--green)
+        }
+        &.incorrect{
+            color: var(--red);
+        }
     }
 
     @keyframes blink{
@@ -76,62 +82,4 @@
        </section>
     </main>
 </body>
-<script>
-    const $time = document.querySelector('time');
-    const $paragraph = document.querySelector('p');
-    const $input = document.querySelector('input');
-
-    const INITIAL_TIME = 30;
-    const TEXT = 'this is a initial test of the different paragraphs the intention is create a clone of monkeytype using HTML, CSS and Javascript this all the probably important things'
-
-    let words = [];
-    let currentsTime = INITIAL_TIME;
-
-    initGame();
-    initEvents();
-
-    function initGame(){
-
-        // logica de el texto
-        
-        words = TEXT.split(' ').slice(0, 32)
-        currentsTime = INITIAL_TIME
-        $time.textContent = currentsTime;
-
-        $paragraph.innerHTML = words.map((word, index) => {
-            const letters = word.split('')
-
-            return  `<x-word>
-            ${letters
-                .map(letter =>`<x-letter>${letter}</x-letter>`)
-                .join('')
-            }
-            </x-word>
-            `
-        }).join('')
-
-        //logica del puntero
-        const $firstWord =$paragraph.querySelector('x-word')
-        $firstWord.classList.add('active')
-        $firstWord.querySelector('x-letter').classList.add('active')
-
-
-        //logica del tiempo
-        const intervalId = setInterval(() =>{
-            currentsTime--;
-            $time.textContent = currentsTime
-            if(currentsTime ===0){
-                clearInterval(intervalId)
-               gameOver();
-            }
-        }, 1000)
-    }
-
-
-    function initEvents(){
-        
-    }
-    function gameOver(){
-        console.log('game over')
-    }
-</script>
+<script src="./js/main.js"></script>
